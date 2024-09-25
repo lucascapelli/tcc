@@ -1,0 +1,47 @@
+{
+  "expo": {
+    "name": "sla",
+    "slug": "sla",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "build": {
+      "development": {
+        "debug": true,
+        "minify": false,
+        "optimizeForBundle": false,
+        "bundleInliner": false
+      },
+      "release": {
+        "debug": false,
+        "minify": true,
+        "optimizeForBundle": true,
+        "bundleInliner": true
+      }
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "faviconPath": "/favicon.ico",
+      "serviceWorker": true,
+      "assetBundlePatterns": [
+        "**/*"
+      ],
+      "extraPackagerArgs": ["--use-preprocessor"]
+    }
+  }
+}
