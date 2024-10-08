@@ -16,7 +16,7 @@ export default function SignUpScreen() {
     }
 
     // Aqui você enviaria os dados para a sua API backend
-    fetch('https://seu-backend.com/api/register', {
+    fetch('http://localhost:3000/api/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
