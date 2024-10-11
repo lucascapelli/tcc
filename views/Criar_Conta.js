@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, StyleSheet, View, Alert } from 'react-native';
 import styles from './styles'; // Importe os estilos do arquivo styles.js
+import { LinearGradient } from 'expo-linear-gradient'; // Importe o componente de gradiente
 
 export default function SignUpScreen() {
   const [email, setEmail] = useState('');
@@ -16,7 +17,7 @@ export default function SignUpScreen() {
     }
 
     // Aqui você enviaria os dados para a sua API backend
-    fetch('http://localhost:3000/api/register', {
+    fetch('https://seu-backend.com/api/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -43,7 +44,11 @@ export default function SignUpScreen() {
   };
 
   return (
-    <View style={styles.body}>
+    <LinearGradient 
+        colors={['rgb(89, 26, 19)', 'rgba(242, 115, 51, 0.897)']}
+        style={styles.container}
+      >
+    <View style={styles.boxLogin}>
       <Text style={styles.title}>Crie a sua conta</Text>
       <TextInput
         style={styles.input}
@@ -78,6 +83,7 @@ export default function SignUpScreen() {
         <Text style={styles.buttonText}>Registrar</Text>
       </TouchableOpacity>
     </View>
+    </LinearGradient>
   );
 }
 

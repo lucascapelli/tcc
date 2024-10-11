@@ -4,33 +4,17 @@ import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native'; // Importe useNavigation
 import styles from './styles'; // Importe os estilos
 import { LinearGradient } from 'expo-linear-gradient'; // Importe o componente de gradiente
-import axios from 'axios'; // Importe o axio
 
 export default function login() {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigation = useNavigation(); // Use o hook useNavigation
 
-    const handleLogin = async () => {
-      try {
-          // Envia uma solicitação POST para o seu endpoint de login
-          const response = await axios.post('http://10.10.10.42:3000/login', { // Altere a URL conforme necessário
-              email,
-              password,
-          });
+    const handleLogin = () => {
+  
+        Alert.alert('login', `Username: ${username}\nPassword: ${password}`);
 
-          // Verifica a resposta do servidor
-          if (response.data.success) {
-              // Se o login for bem-sucedido, navega para a tela inicial (home)
-              navigation.navigate('Home'); // Certifique-se de que o nome da rota está correto
-          } else {
-              Alert.alert('Erro', response.data.message); // Mensagem de erro
-          }
-      } catch (error) {
-          console.error(error);
-          Alert.alert('Erro', 'Houve um problema ao tentar fazer login.');
-      }
-  };
+    };
 
     return (
         <LinearGradient 
@@ -43,9 +27,9 @@ export default function login() {
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
-            placeholder="Email"
-            value={email}
-            onChangeText={setEmail}
+            placeholder="Username"
+            value={username}
+            onChangeText={setUsername}
           />
           <TextInput
             style={styles.input}

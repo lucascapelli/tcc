@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, View, Alert } from 'react-native';
 import styles from './styles'; // Importe os estilos do arquivo styles.js
+import { LinearGradient } from 'expo-linear-gradient'; // Importe o componente de gradiente
 
 export default function ResetPasswordScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -43,7 +44,11 @@ export default function ResetPasswordScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.body}>
+    <LinearGradient 
+        colors={['rgb(89, 26, 19)', 'rgba(242, 115, 51, 0.897)']}
+        style={styles.container}
+      >
+    <View style={styles.boxLogin}>
       <Text style={styles.title}>Redefinir Senha</Text>
       <TextInput
         style={styles.input}
@@ -78,5 +83,6 @@ export default function ResetPasswordScreen({ navigation }) {
         <Text style={styles.buttonText}>Redefinir Senha</Text>
       </TouchableOpacity>
     </View>
+    </LinearGradient>
   );
 }
