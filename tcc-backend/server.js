@@ -3,6 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const userRoutes = require('./routes/user'); // Importa as rotas de usuário
 const { sequelize } = require('./models'); // Importa a instância do Sequelize
+require('dotenv').config();
 
 const app = express();
 app.use(cors());
