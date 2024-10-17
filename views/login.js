@@ -51,7 +51,7 @@ export default function Login() {
         // await AsyncStorage.setItem('token', data.token);
         
         // Redirecionar para a tela inicial ou realizar outras ações
-        navigation.navigate('HomeScreen'); // Redireciona para a tela inicial após o login
+        navigation.navigate('Home'); // Redireciona para a tela inicial após o login
       } else {
         throw new Error(data.message || 'Falha na autenticação');
       }
