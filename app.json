@@ -11,6 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "extra": {
+      "googleMapsApiKey": "AIzaSyCnkkuH9eq0ABecUR5SDuYXpffVtEXFgRM"
+    },
     "build": {
       "development": {
         "debug": true,
