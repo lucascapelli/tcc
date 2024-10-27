@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import axios from 'axios';
+import MapView, { Marker } from 'react-native-maps';
+import MapViewDirections from 'react-native-maps-directions';
 import styles from '../views/styles'; // Importa o arquivo de estilos
 import GOOGLE_MAPS_API_KEY from '../google-maps-api-key'; // Importa a chave da API
 
 const Home = () => {
     const [rotas, setRotas] = useState([]);
-    const [mapImageUrl, setMapImageUrl] = useState(null); // Estado para armazenar a URL da imagem do mapa
+    const [origin, setOrigin] = useState({ latitude: 37.7749, longitude: -122.4194 }); // Coordenadas da origem
+    const [destination, setDestination] = useState({ latitude: 37.7849, longitude: -122.4094 }); // Coordenadas do destino
 
     useEffect(() => {
         // Função para buscar rotas
@@ -19,24 +22,7 @@ const Home = () => {
             }
         };
 
-        // Função para buscar imagem do mapa
-        const getMapImage = async () => {
-            try {
-                const latitude = 37.7749; // Substitua com coordenadas reais
-                const longitude = -122.4194; // Substitua com coordenadas reais
-                const zoom = 13; // Nível de zoom
-                const size = '600x300'; // Tamanho da imagem
-
-                // Monta a URL da imagem do mapa
-                const mapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${latitude},${longitude}&zoom=${zoom}&size=${size}&key=${GOOGLE_MAPS_API_KEY}`;
-                setMapImageUrl(mapUrl); // Armazena a URL da imagem do mapa
-            } catch (error) {
-                console.log(error);
-            }
-        };
-
         fetchRotas();
-        getMapImage(); // Chama a função para buscar a imagem do mapa
     }, []);
 
     return (
@@ -45,18 +31,30 @@ const Home = () => {
             {rotas.map(rota => (
                 <Text key={rota.ID_Rota}>{rota.Nome_Rota}</Text>
             ))}
-            {/* Renderiza a imagem do mapa */}
-            {mapImageUrl && <Image source={{ uri: mapImageUrl }} style={styles.mapImage} />}
+            {/* Renderiza o mapa */}
+            <MapView
+                style={{ flex: 1, height: 400 }} // Ajuste a altura conforme necessário
+                initialRegion={{
+                    latitude: origin.latitude,
+                    longitude: origin.longitude,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                }}
+            >
+                <MapViewDirections
+                    origin={origin}
+                    destination={destination}
+                    apikey={GOOGLE_MAPS_API_KEY} // Substitua pela sua chave API do Google Maps
+                    strokeWidth={3}
+                    strokeColor="blue"
+                />
+                <Marker coordinate={origin} title="Origem" />
+                <Marker coordinate={destination} title="Destino" />
+            </MapView>
         </View>
     );
 };
 
-// Estilo para a imagem do mapa
-const localStyles = StyleSheet.create({
-    mapImage: {
-        width: '100%',
-        height: 200, // Ajuste a altura conforme necessário
-    },
-});
+// Adicione seu estilo aqui, se necessário
 
 export default Home;
