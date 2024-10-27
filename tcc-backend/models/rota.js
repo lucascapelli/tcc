@@ -1,23 +1,15 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Rota extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
-      Rota.belongsTo(models.Usuario, { foreignKey: 'id_usuario', onDelete: 'CASCADE' });
+      Rota.belongsTo(models.User, { foreignKey: 'id_usuario', onDelete: 'CASCADE' });
     }
   }
 
   Rota.init({
-    id_rota: { // Adicionando ID_Rota como chave primária
+    id_rota: { // ID_Rota como chave primária
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true
@@ -31,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       references: {
         model: 'Usuario',
-        key: 'ID_Usuario' // Chave estrangeira referenciando a tabela Usuario
+        key: 'ID_Usuario' // Certifique-se de que o nome aqui corresponde ao seu modelo 'Usuario'
       }
     }
   }, {
@@ -40,6 +32,6 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'Rota', // Nome da tabela no banco de dados
     timestamps: false // Se não estiver usando timestamps (createdAt e updatedAt)
   });
-  
+
   return Rota;
 };
