@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import axios from 'axios';
 import styles from '../views/styles'; // Importa o arquivo de estilos
+import GOOGLE_MAPS_API_KEY from '../google-maps-api-key'; // Importa a chave da API
 
 const Home = () => {
     const [rotas, setRotas] = useState([]);
-    const [mapData, setMapData] = useState(null);
+    const [mapImageUrl, setMapImageUrl] = useState(null); // Estado para armazenar a URL da imagem do mapa
 
     useEffect(() => {
         // Função para buscar rotas
@@ -18,20 +19,24 @@ const Home = () => {
             }
         };
 
-        // Função para buscar dados do mapa
-        const getMapData = async () => {
+        // Função para buscar imagem do mapa
+        const getMapImage = async () => {
             try {
                 const latitude = 37.7749; // Substitua com coordenadas reais
                 const longitude = -122.4194; // Substitua com coordenadas reais
-                const response = await axios.get(`http://localhost:3000/api/map?latitude=${latitude}&longitude=${longitude}`);
-                setMapData(response.data); // Armazena os dados do mapa no estado
+                const zoom = 13; // Nível de zoom
+                const size = '600x300'; // Tamanho da imagem
+
+                // Monta a URL da imagem do mapa
+                const mapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${latitude},${longitude}&zoom=${zoom}&size=${size}&key=${GOOGLE_MAPS_API_KEY}`;
+                setMapImageUrl(mapUrl); // Armazena a URL da imagem do mapa
             } catch (error) {
                 console.log(error);
             }
         };
 
         fetchRotas();
-        getMapData(); // Chama a função para buscar dados do mapa
+        getMapImage(); // Chama a função para buscar a imagem do mapa
     }, []);
 
     return (
@@ -40,12 +45,18 @@ const Home = () => {
             {rotas.map(rota => (
                 <Text key={rota.ID_Rota}>{rota.Nome_Rota}</Text>
             ))}
-            {/* Aqui você pode renderizar os dados do mapa conforme necessário */}
-            {mapData && mapData.results && mapData.results.map((place, index) => (
-                <Text key={index}>{place.name}</Text> // Renderiza o nome dos lugares encontrados
-            ))}
+            {/* Renderiza a imagem do mapa */}
+            {mapImageUrl && <Image source={{ uri: mapImageUrl }} style={styles.mapImage} />}
         </View>
     );
 };
+
+// Estilo para a imagem do mapa
+const localStyles = StyleSheet.create({
+    mapImage: {
+        width: '100%',
+        height: 200, // Ajuste a altura conforme necessário
+    },
+});
 
 export default Home;
