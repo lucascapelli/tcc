@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 import axios from 'axios';
-import MapView, { Marker } from '@teovilla/react-native-web-maps'; // Usando o novo componente
+import MapView, { Marker } from '@teovilla/react-native-web-maps'; 
 import MapViewDirections from 'react-native-maps-directions';
 import styles from '../views/styles';
 import GOOGLE_MAPS_API_KEY from '../google-maps-api-key';
@@ -15,7 +15,7 @@ const Home = () => {
     useEffect(() => {
         const fetchRotas = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/rotas');
+                const response = await axios.get('http://localhost:3000/api/rotas'); // Cuidado com CORS
                 setRotas(response.data);
                 console.log('Rotas recebidas:', response.data);
             } catch (error) {
@@ -44,6 +44,7 @@ const Home = () => {
             )}
             {/* Renderiza o mapa */}
             <MapView
+                provider="google"
                 style={{ flex: 1, height: 400 }}
                 initialRegion={{
                     latitude: origin.latitude,
@@ -54,6 +55,20 @@ const Home = () => {
             >
                 <Marker coordinate={origin} title="Origem" />
                 <Marker coordinate={destination} title="Destino" />
+                {/* Adiciona a rota ao mapa */}
+                <MapViewDirections
+                    origin={origin}
+                    destination={destination}
+                    apikey={GOOGLE_MAPS_API_KEY}
+                    strokeWidth={3}
+                    strokeColor="hotpink"
+                    onReady={(result) => {
+                        console.log(result); // Você pode usar esse resultado se necessário
+                    }}
+                    onError={(errorMessage) => {
+                        console.log('Error', errorMessage);
+                    }}
+                />
             </MapView>
         </View>
     );
