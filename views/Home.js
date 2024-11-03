@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, ActivityIndicator } from 'react-native';
 import axios from 'axios';
 import MapView, { Marker } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
@@ -10,6 +10,7 @@ const Home = () => {
     const [rotas, setRotas] = useState([]);
     const [origin, setOrigin] = useState({ latitude: 37.7749, longitude: -122.4194 }); // Coordenadas da origem
     const [destination, setDestination] = useState({ latitude: 37.7849, longitude: -122.4094 }); // Coordenadas do destino
+    const [loading, setLoading] = useState(true); // Estado de carregamento
 
     useEffect(() => {
         // Função para buscar rotas
@@ -17,20 +18,32 @@ const Home = () => {
             try {
                 const response = await axios.get('http://localhost:3000/api/rotas');
                 setRotas(response.data);
+                console.log('Rotas recebidas:', response.data); // Log das rotas recebidas
             } catch (error) {
-                console.log(error);
+                console.error('Erro ao buscar rotas:', error);
+                // Adicione um tratamento de erro adequado aqui, se necessário
+            } finally {
+                setLoading(false); // Finaliza o carregamento
             }
         };
 
         fetchRotas();
     }, []);
 
+    console.log('Estado das rotas:', rotas); // Log do estado das rotas
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Bem-vindo à Home!</Text>
-            {rotas.map(rota => (
-                <Text key={rota.ID_Rota}>{rota.Nome_Rota}</Text>
-            ))}
+            {loading ? (
+                <ActivityIndicator size="large" color="#0000ff" /> // Indicador de carregamento
+            ) : rotas.length > 0 ? (
+                rotas.map(rota => (
+                    <Text key={rota.ID_Rota}>{rota.Nome_Rota}</Text>
+                ))
+            ) : (
+                <Text>Nenhuma rota encontrada.</Text> // Mensagem se não houver rotas
+            )}
             {/* Renderiza o mapa */}
             <MapView
                 style={{ flex: 1, height: 400 }} // Ajuste a altura conforme necessário
@@ -54,7 +67,5 @@ const Home = () => {
         </View>
     );
 };
-
-// Adicione seu estilo aqui, se necessário
 
 export default Home;

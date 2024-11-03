@@ -1,15 +1,25 @@
-const path = require('path');
 const { getDefaultConfig } = require('expo/metro-config');
 
-module.exports = (() => {
-  const config = getDefaultConfig(__dirname);
+module.exports = (async () => {
+  const config = await getDefaultConfig(__dirname);
 
-  return {
-    ...config,
-    resolver: {
-      extraNodeModules: {
-        axios: path.resolve(__dirname, './node_modules/axios'),
+  config.transformer = {
+    ...config.transformer,
+    assetPlugins: ['expo-asset/tools/hashAssetFiles'],
+    babelTransformerPath: require.resolve('react-native-svg-transformer'),
+    getTransformOptions: async () => ({
+      transform: {
+        experimentalImportSupport: false,
+        inlineRequires: true,
       },
-    },
+    }),
   };
+
+  config.resolver = {
+    ...config.resolver,
+    assetExts: config.resolver.assetExts.filter(ext => ext !== 'svg'),
+    sourceExts: [...config.resolver.sourceExts, 'svg'],
+  };
+
+  return config;
 })();
