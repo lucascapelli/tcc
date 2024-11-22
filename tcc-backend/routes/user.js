@@ -194,28 +194,18 @@ router.post("/rotas", async (req, res) => {
 router.get("/google-maps-directions", async (req, res) => {
   const { origin, destination } = req.query;
 
+  // Validação básica
   if (!origin || !destination) {
     return res
       .status(400)
       .json({ error: "Origin and destination are required." });
   }
-/*
-  try {
-    await fetch("https://maps.googleapis.com/maps/api/directions/json",{
 
-      method: "GET",
-      headers:{
-        "Access-Control-Allow-Origin":"*",
-            "Content-Type": "application/json",
-      }
-    }
-    )
-    
-  } catch (error) {
-    
-  }*/
-console.log("Flavio Otario");
   try {
+    // Log para depuração
+    console.log("Origin:", origin, "Destination:", destination);
+
+    // Requisição à API do Google Maps
     const response = await axios.get(
       "https://maps.googleapis.com/maps/api/directions/json",
       {
@@ -225,22 +215,16 @@ console.log("Flavio Otario");
           key: GOOGLE_MAPS_API_KEY,
           mode: "driving",
         },
-        method:"GET",
-        
-        headers:
-          {
-            "Access-Control-Allow-Origin":"*",
-            "Content-Type": "application/json",
-            
-          }
       }
     );
 
+    // Retorna os dados da resposta
     res.json(response.data);
   } catch (error) {
+    console.error("Erro ao buscar direções:", error.message);
     res.status(500).json({ error: "Failed to fetch directions." });
   }
-    
 });
+
 
 module.exports = router;

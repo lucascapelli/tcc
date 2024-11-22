@@ -20,49 +20,16 @@ const Home = () => {
   const [routeData, setRouteData] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  // Função para buscar a rota do backend
   const fetchRoute = async () => {
     setLoading(true);
     try {
-
-
-      console.log("Flavio Feio");
-    
-
-let config = {
-  method: 'get',
-  maxBodyLength: Infinity,
-  url: 'https://maps.googleapis.com/maps/api/directions/json?origin={latitude: 37.7749,longitude: -122.4194}&destination={latitude: 37.7849, longitude: -122.4094}&key=AIzaSyCObucPkUjYU7AI6hh51U4RgI4D7mW1mLI&mode="driving"&language="en"',
-  headers: { }
-};
-
-axios.request(config)
-.then((response) => {
-  console.log(JSON.stringify(response.data));
-})
-.catch((error) => {
-  console.log(error);
-});
-
-      /*
-      const response = await axios.get(
-        "http://192.168.0.7:3000/api/google-maps-directions",
-        {
-          params: {
-            origin: `${origin.latitude},${origin.longitude}`,
-            destination: `${destination.latitude},${destination.longitude}`,
-          },
-          method:"GET",
-          
-          headers:
-          {
-            "Access-Control-Allow-Origin":"*",
-            "Content-Type": "application/json",
-
-          }
-        }
-      );
-
-*/
+      const response = await axios.get("http://192.168.56.1:3000/api/google-maps-directions", {
+        params: {
+          origin: `${origin.latitude},${origin.longitude}`,
+          destination: `${destination.latitude},${destination.longitude}`,
+        },
+      });
       setRouteData(response.data);
       console.log("Dados da rota:", response.data);
     } catch (error) {

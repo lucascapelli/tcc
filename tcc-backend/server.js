@@ -1,64 +1,35 @@
-require("dotenv").config(); // Carrega as variáveis de ambiente do .env
+require("dotenv").config(); // Carrega variáveis de ambiente
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const axios = require("axios");
-const userRoutes = require("./routes/user"); // Importa as rotas de usuário
-const { sequelize } = require("./models"); // Importa a instância do Sequelize
-const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY; // Agora você usa a chave do .env
-
-console.log(process.env.GOOGLE_MAPS_API_KEY); // Verifica se a chave está sendo carregada corretamente
+const userRoutes = require("./routes/user"); // Importa rotas de usuário
+const { sequelize } = require("./models"); // Importa Sequelize
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-app.use(cors());
 
-/*// Middleware do CORS (controlado pelo pacote cors)
+// Middleware de CORS
 app.use(
   cors({
-    origin: ["http://10.10.10.2", "http://localhost:19006"], // Origem permitida
-    methods: ["GET", "POST", "PUT", "DELETE"], // Métodos permitidos
-    allowedHeaders: ["Content-Type", "Authorization"], // Cabeçalhos permitidos
+    origin: "*", // URL do frontend
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-// Configurações adicionais de cabeçalhos globais
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*"); // Permite qualquer origem como fallback
-  res.header(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, OPTIONS"
-  ); // Garante os métodos suportados
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  ); // Garantia de cabeçalhos
-  next();
-});
+// Middleware para analisar JSON
+app.use(bodyParser.json());
 
-// Tratamento de requisições OPTIONS (Preflight Requests)
-app.options("*", (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  );
-  res.sendStatus(204); // Resposta rápida e sem conteúdo
-});*/
+// Rotas
+app.use("/api", userRoutes);
 
-app.use(bodyParser.json()); // Para analisar o corpo da requisição em JSON
-
-// Usar as rotas
-app.use("/api", userRoutes); // Prefixa as rotas com '/api'
-
-// Rota para a API de Direções do Google Maps
+// Rota para Direções do Google Maps
 app.get("/api/google-maps-directions", async (req, res) => {
   const { origin, destination } = req.query;
-  const apiKey = process.env.GOOGLE_MAPS_API_KEY; // Supondo que sua chave está no arquivo .env
+  const apiKey = process.env.GOOGLE_MAPS_API_KEY;
 
   try {
-    // Faz a requisição para a API de Direções do Google Maps
     const response = await axios.get(
       "https://maps.googleapis.com/maps/api/directions/json",
       {
@@ -72,7 +43,6 @@ app.get("/api/google-maps-directions", async (req, res) => {
       }
     );
 
-    // Retorna a resposta JSON para o cliente
     res.json(response.data);
   } catch (error) {
     console.error("Erro ao buscar direções:", error.message);
@@ -80,7 +50,7 @@ app.get("/api/google-maps-directions", async (req, res) => {
   }
 });
 
-// Testa a conexão com o banco de dados
+// Testa conexão com banco de dados
 sequelize
   .authenticate()
   .then(() => {
