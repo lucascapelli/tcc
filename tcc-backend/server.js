@@ -11,9 +11,42 @@ console.log(process.env.GOOGLE_MAPS_API_KEY); // Verifica se a chave está sendo
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+app.use(cors());
 
-// Configurações de CORS
-app.use(cors({ origin: ["http://10.10.10.227:19006"],  })); // Permite todas as origens (você pode restringir isso conforme necessário)
+/*// Middleware do CORS (controlado pelo pacote cors)
+app.use(
+  cors({
+    origin: ["http://10.10.10.2", "http://localhost:19006"], // Origem permitida
+    methods: ["GET", "POST", "PUT", "DELETE"], // Métodos permitidos
+    allowedHeaders: ["Content-Type", "Authorization"], // Cabeçalhos permitidos
+  })
+);
+
+// Configurações adicionais de cabeçalhos globais
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*"); // Permite qualquer origem como fallback
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS"
+  ); // Garante os métodos suportados
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  ); // Garantia de cabeçalhos
+  next();
+});
+
+// Tratamento de requisições OPTIONS (Preflight Requests)
+app.options("*", (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  res.sendStatus(204); // Resposta rápida e sem conteúdo
+});*/
+
 app.use(bodyParser.json()); // Para analisar o corpo da requisição em JSON
 
 // Usar as rotas
