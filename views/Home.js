@@ -113,26 +113,53 @@ const Home = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 16,
+    backgroundColor: '#f5ebeb', // Mesma cor de fundo usada na boxLogin
   },
   title: {
-    fontSize: 20,
-    marginBottom: 10,
+    fontSize: 24,
+    marginBottom: 16,
+    textAlign: 'center',
+    color: 'rgb(66, 65, 65)', // Cor consistente com os links
   },
   input: {
-    width: "80%",
+    width: '90%',
     height: 40,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     borderWidth: 1,
-    marginBottom: 10,
-    paddingLeft: 10,
+    paddingHorizontal: 10,
+    marginBottom: 12,
+    borderRadius: 5,
+    backgroundColor: '#fff', // Fundo branco para contraste
+    shadowColor: '#000', // Adicionando sombra similar à boxLogin
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  button: {
+    backgroundColor: 'rgb(66, 65, 65)', // Cor do botão
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginTop: 10,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    textAlign: 'center',
   },
   map: {
-    width: "100%",
+    width: '100%',
     height: 400,
     marginTop: 20,
+    borderRadius: 10, // Bordas arredondadas para o mapa
+    overflow: 'hidden', // Garante que o conteúdo não ultrapasse as bordas
+    borderWidth: 1,
+    borderColor: '#ccc',
   },
 });
 
